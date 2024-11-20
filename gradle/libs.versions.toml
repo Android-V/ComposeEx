@@ -1,0 +1,39 @@
+[versions]
+agp = "8.1.2"
+composeBom = "2024.11.00"
+kotlin = "1.9.10"
+coreKtx = "1.15.0"
+koinCore = "3.5.0"
+koinAndroid = "3.5.0"
+koinAndroidxCompose = "3.5.0"
+activityCompose = "1.7.2"
+ui = "1.5.2"
+uiToolingPreview = "1.5.2"
+materialVersion = "1.5.2"
+material3 = "1.2.0"
+lifecycleViewmodel = "2.6.2"
+accompanistSystemuicontroller = "0.30.1"
+lifecycleRuntime = "2.6.2"
+lifecycleRuntimeCompose = "2.6.2"
+
+[libraries]
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+koin-core = { group = "io.insert-koin", name = "koin-core", version.ref = "koinCore" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koinAndroid" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koinAndroidxCompose" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
+androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "uiToolingPreview" }
+androidx-material = { group = "androidx.compose.material", name = "material", version.ref = "materialVersion" }
+androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycleViewmodel" }
+accompanist-systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
+androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime", version.ref = "lifecycleRuntime" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
