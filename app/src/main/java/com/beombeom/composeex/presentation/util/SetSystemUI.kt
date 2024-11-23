@@ -1,4 +1,4 @@
-package com.beombeom.composeex.util
+package com.beombeom.composeex.presentation.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
