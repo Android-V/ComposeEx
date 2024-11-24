@@ -43,7 +43,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.beombeom.composeex.R
-import com.beombeom.composeex.presentation.navigation.ExampleItem
+import com.beombeom.composeex.presentation.navigation.ExItem
 import com.beombeom.composeex.presentation.util.SetSystemUI
 import com.beombeom.composeex.presentation.util.noRippleClickable
 
@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
                         SetSystemUI()
                         MainScreen(viewModel, navController)
                     }
-                    ExampleItem.getExampleList().forEach { item ->
+                    ExItem.getExList().forEach { item ->
                         composable(
                             route = item.route,
                             content = item.content
@@ -84,8 +84,7 @@ fun MainScreen(viewModel: MainViewModel, navController: NavHostController) {
                 MainHeader(title = stringResource(R.string.title_main_header))
             }
 
-
-            items(ExampleItem.getExampleList()) { example ->
+            items(ExItem.getExList()) { example ->
                 Column(modifier = Modifier.fillMaxWidth()) {
                     CardSection(
                         context = context,
@@ -134,7 +133,7 @@ fun MainHeader(title: String) {
                 modifier = Modifier.align(Alignment.Center),
                 color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.displayMedium,
-                fontSize = 16.sp
+                fontSize = 20.sp
             )
         }
     }
