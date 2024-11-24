@@ -62,11 +62,18 @@ class MainActivity : ComponentActivity() {
                         SetSystemUI()
                         MainScreen(viewModel, navController)
                     }
+                    // Register routes from ExItem
                     ExItem.getExList().forEach { item ->
                         composable(
-                            route = item.route,
-                            content = item.content
-                        )
+                            route = item.route
+                        ) {
+                            // Pass navController if subCategory exists
+                            if (item.subCategory.isNullOrEmpty()) {
+                                item.content(navController, it)
+                            } else {
+                                item.content(null, it)
+                            }
+                        }
                     }
                 }
             }
@@ -78,13 +85,15 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen(viewModel: MainViewModel, navController: NavHostController) {
     val context = LocalContext.current
+    val filteredItems = ExItem.getExList().filter { it.subCategory.isNullOrEmpty() }
+
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(modifier = Modifier.fillMaxSize()) {
             stickyHeader {
                 MainHeader(title = stringResource(R.string.title_main_header))
             }
 
-            items(ExItem.getExList()) { example ->
+            items(filteredItems) { example ->
                 Column(modifier = Modifier.fillMaxWidth()) {
                     CardSection(
                         context = context,
@@ -99,6 +108,7 @@ fun MainScreen(viewModel: MainViewModel, navController: NavHostController) {
         }
     }
 }
+
 
 @Composable
 fun MainHeader(title: String) {
@@ -156,7 +166,7 @@ fun CardSection(
         ),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.Gray,
+            containerColor = Color.DarkGray,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
     ) {
