@@ -12,7 +12,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -34,23 +33,40 @@ import kotlinx.coroutines.launch
 @Composable
 fun BottomSheetScaffoldEx() {
     val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+        bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
+        snackbarHostState = remember { SnackbarHostState() }
     )
-    val snackBarHostState = remember { SnackbarHostState() }
+
     val coroutineScope = rememberCoroutineScope()
 
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
-        sheetPeekHeight = 128.dp,
+        sheetPeekHeight = 90.dp,
+        sheetTonalElevation  = 5.dp,
         sheetContent = {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+                    .fillMaxSize()
+                    .padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)
+                verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp),
+
             ) {
                 InfoText("This is the BottomSheet")
+
+                InfoText("isVisible: ${scaffoldState.bottomSheetState.isVisible}")
+
+                InfoText("currentValue: ${scaffoldState.bottomSheetState.currentValue}")
+
+                InfoText("targetValue: ${scaffoldState.bottomSheetState.targetValue}")
+
+                InfoText(
+                    text = try {
+                        "offset: ${scaffoldState.bottomSheetState.requireOffset()}"
+                    } catch (e: IllegalStateException) {
+                        "offset: (Not Available)"
+                    }
+                )
 
                 Column(
                     modifier = Modifier.fillMaxWidth(),
@@ -81,7 +97,7 @@ fun BottomSheetScaffoldEx() {
                     Button(
                         onClick = {
                             coroutineScope.launch {
-                                snackBarHostState.showSnackbar(
+                                scaffoldState.snackbarHostState.showSnackbar(
                                     message = "Message from BottomSheet!",
                                     actionLabel = "Dismiss"
                                 )
@@ -97,9 +113,6 @@ fun BottomSheetScaffoldEx() {
                 }
             }
         },
-        snackbarHost = {
-            SnackbarHost(snackBarHostState)
-        }
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -113,16 +126,16 @@ fun BottomSheetScaffoldEx() {
                     .padding(16.dp)
             ) {
                 InfoText(
-                    text = "Snackbar Visible: ${snackBarHostState.currentSnackbarData != null}"
+                    text = "Snackbar Visible: ${scaffoldState.snackbarHostState.currentSnackbarData != null}"
                 )
                 InfoText(
                     text = "Snackbar Message: ${
-                        snackBarHostState.currentSnackbarData?.visuals?.message ?: "None"
+                        scaffoldState.snackbarHostState.currentSnackbarData?.visuals?.message ?: "None"
                     }"
                 )
                 InfoText(
                     text = "Snackbar Action: ${
-                        snackBarHostState.currentSnackbarData?.visuals?.actionLabel ?: "None"
+                        scaffoldState.snackbarHostState.currentSnackbarData?.visuals?.actionLabel ?: "None"
                     }"
                 )
 
@@ -163,7 +176,7 @@ fun BottomSheetScaffoldEx() {
                     Button(
                         onClick = {
                             coroutineScope.launch {
-                                snackBarHostState.showSnackbar(
+                                scaffoldState.snackbarHostState.showSnackbar(
                                     message = "Message from MainContent!",
                                     actionLabel = "Dismiss"
                                 )
