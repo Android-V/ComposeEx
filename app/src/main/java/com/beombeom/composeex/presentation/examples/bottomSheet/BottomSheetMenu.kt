@@ -1,4 +1,4 @@
-package com.beombeom.composeex.presentation.examples
+package com.beombeom.composeex.presentation.examples.bottomSheet
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box

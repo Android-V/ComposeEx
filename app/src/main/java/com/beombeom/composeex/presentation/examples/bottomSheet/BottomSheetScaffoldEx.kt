@@ -1,4 +1,4 @@
-package com.beombeom.composeex.presentation.examples
+package com.beombeom.composeex.presentation.examples.bottomSheet
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
