@@ -1,5 +1,6 @@
 package com.beombeom.composeex.presentation.examples.pager
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -60,9 +61,13 @@ fun PagerEx() {
             autoScrollScope.launch {
                 while (isAutoScrollEnabled) {
                     delay(1500)
-                    if (!pagerState.isScrollInProgress) {
-                        val nextPage = (pagerState.currentPage + 1) % pagerState.pageCount
-                        pagerState.animateScrollToPage(nextPage)
+                    try {
+                        if (!pagerState.isScrollInProgress) {
+                            val nextPage = (pagerState.currentPage + 1) % pagerState.pageCount
+                            goPage(pagerState, nextPage)
+                        }
+                    } catch (e: Exception) {
+                        Log.e("PagerEx", "Exception in autoScroll: ${e.message}", e)
                     }
                 }
             }
@@ -116,12 +121,15 @@ fun PagerEx() {
                             } else {
                                 pagerState.currentPage - 1
                             }
-                            pagerState.animateScrollToPage(prevPage)
+                            goPage(pagerState, prevPage)
                         }
                     },
                     modifier = Modifier.align(Alignment.CenterStart)
                 ) {
-                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Previous Page")
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Previous Page"
+                    )
                 }
 
                 IconButton(
@@ -132,12 +140,15 @@ fun PagerEx() {
                             } else {
                                 pagerState.currentPage + 1
                             }
-                            pagerState.animateScrollToPage(nextPage)
+                            goPage(pagerState, nextPage)
                         }
                     },
                     modifier = Modifier.align(Alignment.CenterEnd)
                 ) {
-                    Icon(imageVector = Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "Next Page")
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = "Next Page"
+                    )
                 }
             }
 
@@ -145,9 +156,10 @@ fun PagerEx() {
                 itemSize = pagerState.pageCount,
                 pagerState = pagerState,
                 onDotClick = { page ->
-                    stopAutoScroll()
                     movePageScope.launch {
-                        pagerState.animateScrollToPage(page)
+                        if (!pagerState.isScrollInProgress) {
+                            goPage(pagerState, page)
+                        }
                     }
                 }
             )
@@ -159,7 +171,9 @@ fun PagerEx() {
 fun CustomViewPager(pagerState: PagerState) {
     HorizontalPager(
         state = pagerState,
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp),
         verticalAlignment = Alignment.CenterVertically
     ) { page ->
         Card(
@@ -218,6 +232,13 @@ fun PageIndicator(
     }
 }
 
+private suspend fun goPage(pagerState: PagerState, nextPage: Int) {
+    if (!pagerState.isScrollInProgress) {
+        pagerState.animateScrollToPage(nextPage)
+    } else {
+        Log.d("PagerEx", "Skipping goPage: User is scrolling.")
+    }
+}
 
 @Composable
 fun PagerManualEx() {
@@ -241,12 +262,12 @@ fun PagerManualEx() {
             }
 
             if (scrollLastPage) {
-                pagerState.animateScrollToPage(0)
+                goPage(pagerState, 0)
                 scrollLastPage = false
             }
 
             if (scrollFirstPage) {
-                pagerState.animateScrollToPage(pagerState.pageCount - 1)
+                goPage(pagerState, pagerState.pageCount - 1)
                 scrollFirstPage = false
             }
         }
@@ -257,18 +278,10 @@ fun PagerManualEx() {
                 .padding(10.dp),
             verticalArrangement = Arrangement.Center
         ) {
-            InfoText(
-                text = "isScrollInProgress : ${pagerState.isScrollInProgress}"
-            )
-            InfoText(
-                text = "pageCount : ${pagerState.pageCount}"
-            )
-            InfoText(
-                text = "currentPage : ${pagerState.currentPage}"
-            )
-            InfoText(
-                text = "currentPageOffsetFraction : ${pagerState.currentPageOffsetFraction}"
-            )
+            InfoText(text = "isScrollInProgress : ${pagerState.isScrollInProgress}")
+            InfoText(text = "pageCount : ${pagerState.pageCount}")
+            InfoText(text = "currentPage : ${pagerState.currentPage}")
+            InfoText(text = "currentPageOffsetFraction : ${pagerState.currentPageOffsetFraction}")
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -283,10 +296,13 @@ fun PagerManualEx() {
                 pagerState = pagerState,
                 onDotClick = { page ->
                     coroutineScope.launch {
-                        pagerState.animateScrollToPage(page)
+                        if (!pagerState.isScrollInProgress) {
+                            goPage(pagerState, page)
+                        }
                     }
                 }
             )
         }
     }
 }
+
