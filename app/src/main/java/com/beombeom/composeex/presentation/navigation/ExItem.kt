@@ -7,7 +7,7 @@ import com.beombeom.composeex.presentation.examples.bottomSheet.BottomSheetMenu
 import com.beombeom.composeex.presentation.examples.bottomSheet.BottomSheetScaffoldEx
 import com.beombeom.composeex.presentation.examples.bottomSheet.ModalBottomSheetEx
 import com.beombeom.composeex.presentation.examples.pager.PagerEx
-import com.beombeom.composeex.presentation.examples.recyclerView.RecyclerViewEx
+import com.beombeom.composeex.presentation.examples.lazyLow.RecyclerViewEx
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_BOTTOM_SHEET_MENU
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_BOTTOM_SHEET_SCAFFOLD
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_MODAL_BOTTOM_SHEET
