@@ -7,18 +7,22 @@ import com.beombeom.composeex.presentation.examples.bottomSheet.BottomSheetMenu
 import com.beombeom.composeex.presentation.examples.bottomSheet.BottomSheetScaffoldEx
 import com.beombeom.composeex.presentation.examples.bottomSheet.ModalBottomSheetEx
 import com.beombeom.composeex.presentation.examples.pager.PagerEx
+import com.beombeom.composeex.presentation.examples.recyclerView.RecyclerViewEx
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_BOTTOM_SHEET_MENU
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_BOTTOM_SHEET_SCAFFOLD
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_MODAL_BOTTOM_SHEET
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_PAGER
+import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_RECYCLERVIEW
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_BOTTOM_SHEET_MENU
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_BOTTOM_SHEET_SCAFFOLD
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_MODAL_BOTTOM_SHEET
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_PAGER
+import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_RECYCLERVIEW
 import com.beombeom.composeex.presentation.navigation.Routes.BOTTOM_SHEET_MENU
 import com.beombeom.composeex.presentation.navigation.Routes.BOTTOM_SHEET_SCAFFOLD
 import com.beombeom.composeex.presentation.navigation.Routes.MODAL_BOTTOM_SHEET
 import com.beombeom.composeex.presentation.navigation.Routes.PAGER
+import com.beombeom.composeex.presentation.navigation.Routes.RECYCLERVIEW
 
 data class ExItem(
     val route: String,
@@ -62,11 +66,19 @@ data class ExItem(
             description = DESCRIPTION_PAGER
         )
 
+        private val RecyclerView = ExItem(
+            route = RECYCLERVIEW,
+            title = TITLE_RECYCLERVIEW,
+            content = { _, _ -> RecyclerViewEx() },
+            description = DESCRIPTION_RECYCLERVIEW
+        )
+
         fun getExList(): List<ExItem> = listOf(
             BottomSheet,
             BottomSheetScaffold,
             ModalBottomSheet,
             Pager,
+            RecyclerView
         )
     }
 }
@@ -74,6 +86,7 @@ data class ExItem(
 object Routes {
     const val BOTTOM_SHEET_MENU = "bottomSheetMenu"
     const val PAGER = "pager"
+    const val RECYCLERVIEW = "recyclerView"
 
     // sub routes
     const val BOTTOM_SHEET_SCAFFOLD = "bottomSheetScaffold"
@@ -85,6 +98,7 @@ object ExTitles {
     const val TITLE_BOTTOM_SHEET_SCAFFOLD = "Bottom Sheet Scaffold Ex"
     const val TITLE_MODAL_BOTTOM_SHEET = "Modal Bottom Sheet Ex"
     const val TITLE_PAGER = "Pager Ex"
+    const val TITLE_RECYCLERVIEW = "RecyclerView Ex"
 }
 
 object SubCategories {
@@ -96,4 +110,5 @@ object ExDescriptions {
     const val DESCRIPTION_BOTTOM_SHEET_SCAFFOLD = "BottomSheetScaffold로 구현해보는 Bottom Sheet"
     const val DESCRIPTION_MODAL_BOTTOM_SHEET = "ModalBottomSheet으로 구현해보는 Bottom Sheet"
     const val DESCRIPTION_PAGER = "HorizontalPager로 구현해보는 Screen의 Pager"
+    const val DESCRIPTION_RECYCLERVIEW = "LazyRow로 구현해보는 RecyclerView"
 }

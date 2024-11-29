@@ -2,4 +2,7 @@
     <string name="app_name">ComposeEx</string>
     <string name="title_main_header">Compose Examples</string>
     <string name="title_bottom_sheet">Bottom Sheet Ex</string>
+
+
+    <string name="title_recycler_view">RecyclerView Ex</string>
 </resources>
