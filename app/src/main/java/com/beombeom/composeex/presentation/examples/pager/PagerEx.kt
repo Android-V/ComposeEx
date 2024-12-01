@@ -2,6 +2,7 @@ package com.beombeom.composeex.presentation.examples.pager
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +32,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,30 +42,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.lerp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.beombeom.composeex.presentation.examples.bottomSheet.InfoText
+import com.google.accompanist.pager.HorizontalPagerIndicator
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.absoluteValue
 
 @Composable
 fun PagerEx() {
-    Box(modifier = Modifier.fillMaxSize()) {
-        val pagerState = rememberPagerState { 10 }
-        val movePageScope = rememberCoroutineScope()
-        var isAutoScrollEnabled by remember { mutableStateOf(false) }
-        val autoScrollScope = rememberCoroutineScope()
+    val viewModel = viewModel<PagerViewModel>()
+    val pagerState by viewModel.pagerState.collectAsState()
+    val isAutoScrollEnabled by viewModel.isAutoScrollEnabled.collectAsState()
+    val movePageScope = rememberCoroutineScope()
+    val autoScrollScope = rememberCoroutineScope()
 
-        fun startAutoScroll() {
+    LaunchedEffect(isAutoScrollEnabled) {
+        if (isAutoScrollEnabled) {
             autoScrollScope.launch {
                 while (isAutoScrollEnabled) {
                     delay(1500)
                     try {
                         if (!pagerState.isScrollInProgress) {
-                            val nextPage = (pagerState.currentPage + 1) % pagerState.pageCount
+                            val nextPage = viewModel.getNextPage()
                             goPage(pagerState, nextPage)
                         }
                     } catch (e: Exception) {
@@ -71,13 +79,11 @@ fun PagerEx() {
                     }
                 }
             }
-        }
-
-        fun stopAutoScroll() {
-            isAutoScrollEnabled = false
+        } else {
             autoScrollScope.coroutineContext.cancelChildren()
         }
-
+    }
+    Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -90,14 +96,7 @@ fun PagerEx() {
             InfoText(text = "currentPageOffsetFraction : ${pagerState.currentPageOffsetFraction}")
 
             Button(
-                onClick = {
-                    isAutoScrollEnabled = !isAutoScrollEnabled
-                    if (isAutoScrollEnabled) {
-                        startAutoScroll()
-                    } else {
-                        stopAutoScroll()
-                    }
-                },
+                onClick = { viewModel.toggleAutoScroll() },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Gray,
                     contentColor = Color.White,
@@ -116,11 +115,7 @@ fun PagerEx() {
                 IconButton(
                     onClick = {
                         movePageScope.launch {
-                            val prevPage = if (pagerState.currentPage == 0) {
-                                pagerState.pageCount - 1
-                            } else {
-                                pagerState.currentPage - 1
-                            }
+                            val prevPage = viewModel.getPreviousPage()
                             goPage(pagerState, prevPage)
                         }
                     },
@@ -135,11 +130,7 @@ fun PagerEx() {
                 IconButton(
                     onClick = {
                         movePageScope.launch {
-                            val nextPage = if (pagerState.currentPage == pagerState.pageCount - 1) {
-                                0
-                            } else {
-                                pagerState.currentPage + 1
-                            }
+                            val nextPage = viewModel.getNextPage()
                             goPage(pagerState, nextPage)
                         }
                     },
@@ -174,13 +165,22 @@ fun CustomViewPager(pagerState: PagerState) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 15.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) { page ->
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = 20.dp)
+                .graphicsLayer {
+                    val pageOffset =
+                        ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction)
+                    alpha = lerp(
+                        start = 0.2f,
+                        stop = 1f,
+                        fraction = 1f - pageOffset.absoluteValue.coerceIn(0f, 1f),
+                    )
+                },
             shape = RoundedCornerShape(8.dp),
             border = BorderStroke(1.dp, Color.Black),
             colors = CardDefaults.cardColors(
@@ -204,6 +204,39 @@ fun CustomViewPager(pagerState: PagerState) {
         }
     }
     Spacer(modifier = Modifier.height(10.dp))
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun HorizontalPagerWithDefaultIndicator(
+    itemSize: Int,
+    pagerState: PagerState,
+    onDotClick: (Int) -> Unit
+) {
+    val coroutineScope = rememberCoroutineScope()
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // 기본 제공 HorizontalPagerIndicator
+        HorizontalPagerIndicator(
+            pagerState = pagerState,
+            pageCount = itemSize,
+            modifier = Modifier
+                .padding(16.dp)
+                .clickable {
+                    // 현재 페이지 클릭 시 다음 페이지로 이동
+                    val currentPage = pagerState.currentPage
+                    val nextPage = (currentPage + 1) % itemSize
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(nextPage)
+                    }
+                },
+            activeColor = Color.DarkGray,  // 활성화된 페이지 색상
+            inactiveColor = Color.LightGray // 비활성화된 페이지 색상
+        )
+    }
 }
 
 @Composable
@@ -305,4 +338,3 @@ fun PagerManualEx() {
         }
     }
 }
-
