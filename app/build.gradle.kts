@@ -66,4 +66,8 @@ dependencies {
     // Compose ViewModel
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.accompanist.systemuicontroller)
+
+    // ExoPlayer
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.ui)
 }

@@ -8,21 +8,25 @@ import com.beombeom.composeex.presentation.examples.bottomSheet.BottomSheetScaff
 import com.beombeom.composeex.presentation.examples.bottomSheet.ModalBottomSheetEx
 import com.beombeom.composeex.presentation.examples.pager.PagerEx
 import com.beombeom.composeex.presentation.examples.lazyLow.RecyclerViewEx
+import com.beombeom.composeex.presentation.examples.videoPlayer.VideoPlayerEx
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_BOTTOM_SHEET_MENU
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_BOTTOM_SHEET_SCAFFOLD
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_MODAL_BOTTOM_SHEET
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_PAGER
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_RECYCLERVIEW
+import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_VIDEO_PLAYER
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_BOTTOM_SHEET_MENU
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_BOTTOM_SHEET_SCAFFOLD
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_MODAL_BOTTOM_SHEET
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_PAGER
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_RECYCLERVIEW
+import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_VIDEO_PLAYER
 import com.beombeom.composeex.presentation.navigation.Routes.BOTTOM_SHEET_MENU
 import com.beombeom.composeex.presentation.navigation.Routes.BOTTOM_SHEET_SCAFFOLD
 import com.beombeom.composeex.presentation.navigation.Routes.MODAL_BOTTOM_SHEET
 import com.beombeom.composeex.presentation.navigation.Routes.PAGER
 import com.beombeom.composeex.presentation.navigation.Routes.RECYCLERVIEW
+import com.beombeom.composeex.presentation.navigation.Routes.VIDEO_PLAYER
 
 data class ExItem(
     val route: String,
@@ -73,12 +77,20 @@ data class ExItem(
             description = DESCRIPTION_RECYCLERVIEW
         )
 
+        private val VideoPlayer = ExItem(
+            route = VIDEO_PLAYER,
+            title = TITLE_VIDEO_PLAYER,
+            content = { _, _ -> VideoPlayerEx() },
+            description = DESCRIPTION_VIDEO_PLAYER
+        )
+
         fun getExList(): List<ExItem> = listOf(
             BottomSheet,
             BottomSheetScaffold,
             ModalBottomSheet,
             Pager,
-            RecyclerView
+            RecyclerView,
+            VideoPlayer
         )
     }
 }
@@ -87,6 +99,7 @@ object Routes {
     const val BOTTOM_SHEET_MENU = "bottomSheetMenu"
     const val PAGER = "pager"
     const val RECYCLERVIEW = "recyclerView"
+    const val VIDEO_PLAYER = "videoPlayer"
 
     // sub routes
     const val BOTTOM_SHEET_SCAFFOLD = "bottomSheetScaffold"
@@ -99,6 +112,7 @@ object ExTitles {
     const val TITLE_MODAL_BOTTOM_SHEET = "Modal Bottom Sheet Ex"
     const val TITLE_PAGER = "Pager Ex"
     const val TITLE_RECYCLERVIEW = "RecyclerView Ex"
+    const val TITLE_VIDEO_PLAYER = "VideoPlayer Ex"
 }
 
 object SubCategories {
@@ -111,4 +125,5 @@ object ExDescriptions {
     const val DESCRIPTION_MODAL_BOTTOM_SHEET = "ModalBottomSheet으로 구현해보는 Bottom Sheet"
     const val DESCRIPTION_PAGER = "HorizontalPager로 구현해보는 Screen의 Pager"
     const val DESCRIPTION_RECYCLERVIEW = "LazyRow로 구현해보는 RecyclerView"
+    const val DESCRIPTION_VIDEO_PLAYER = "ExoPlayer를 사용하여 구현해보는 VideoPlayer"
 }
