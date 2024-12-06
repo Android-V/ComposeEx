@@ -1,7 +1,11 @@
 package com.beombeom.composeex.presentation.examples.sideEffect
 
 import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -10,55 +14,79 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.delay
 import java.util.UUID
-
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.beombeom.composeex.presentation.examples.bottomSheet.InfoText
 
 @Composable
 fun SideEffectEx() {
-    var showGreeting by remember { mutableStateOf(true) }
-    var uniqueId by remember { mutableStateOf(generateRandomString()) }
-    val count = remember { mutableStateOf(0) }
+    var showGreeting by rememberSaveable { mutableStateOf(true) }
+    var uniqueId by rememberSaveable { mutableStateOf(generateRandomString()) }
+    val count = rememberSaveable { mutableStateOf(0) }
 
-    Column {
-        Button(onClick = {
-            count.value += 1
-            Log.d("SideEffectEx", "Count button clicked, count = ${count.value}")
-        }) {
-            Text("Count is ${count.value}")
-        }
+    // Example: produceState
+    val asyncData by produceState(initialValue = "No ID yet...", uniqueId) {
+        delay(2000)
+        // 실제로 ID가 없는 것은 아니지만 initialValue를 확인하고자 사용.
+        value = "ID shown in asyncData: $uniqueId"
+    }
 
-        if (showGreeting) {
-            ComponentSample(uniqueId) // Displays LaunchedEffect and DisposableEffect behavior
-        }
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            // Count Button
+            Button(onClick = {
+                count.value += 1
+                Log.d("SideEffectEx", "Count button clicked, count = ${count.value}")
+            }) {
+                Text("Count is ${count.value}")
+            }
 
-        Button(onClick = {
-            showGreeting = !showGreeting
-            Log.d("SideEffectEx", "Toggle Greeting button clicked, showGreeting = $showGreeting")
-        }) {
-            Text(if (showGreeting) "Hide Greeting" else "Show Greeting")
-        }
+            if (showGreeting) {
+                ComponentSample(uniqueId)
+            }
 
-        Button(onClick = {
-            uniqueId = generateRandomString()
-            Log.d("SideEffectEx", "Change ID button clicked, new uniqueId = $uniqueId")
-        }) {
-            Text("Generate New ID")
+            Button(onClick = {
+                showGreeting = !showGreeting
+                Log.d(
+                    "SideEffectEx",
+                    "Toggle Greeting button clicked, showGreeting = $showGreeting"
+                )
+            }) {
+                Text(if (showGreeting) "Hide Greeting" else "Show Greeting")
+            }
+
+            Button(onClick = {
+                uniqueId = generateRandomString()
+                Log.d("SideEffectEx", "Change ID button clicked, new uniqueId = $uniqueId")
+            }) {
+                Text("Generate New ID")
+            }
+
+            InfoText(text = asyncData)
         }
     }
 }
 
 @Composable
 fun ComponentSample(uniqueId: String) {
-    Text(text = "Hello $uniqueId!")
+    InfoText(text = "My Id: $uniqueId!")
 
-    // Example: `LaunchedEffect`
     LaunchedEffect(uniqueId) {
         Log.d("ComponentSample", "LaunchedEffect triggered by randomId = $uniqueId")
     }
 
-    // Example: `DisposableEffect`
     DisposableEffect(key1 = uniqueId) {
         Log.d("ComponentSample", "DisposableEffect started for randomId = $uniqueId")
 
@@ -67,7 +95,6 @@ fun ComponentSample(uniqueId: String) {
         }
     }
 
-    // Example: `SideEffect`
     SideEffect {
         Log.d("ComponentSample", "SideEffect: ComponentSample recomposed with randomId = $uniqueId")
     }
