@@ -2,7 +2,6 @@ package com.beombeom.composeex.presentation.examples.pager
 
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -50,7 +49,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.beombeom.composeex.presentation.examples.bottomSheet.InfoText
-import com.google.accompanist.pager.HorizontalPagerIndicator
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -204,39 +202,6 @@ fun CustomViewPager(pagerState: PagerState) {
         }
     }
     Spacer(modifier = Modifier.height(10.dp))
-}
-
-@OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun HorizontalPagerWithDefaultIndicator(
-    itemSize: Int,
-    pagerState: PagerState,
-    onDotClick: (Int) -> Unit
-) {
-    val coroutineScope = rememberCoroutineScope()
-
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // 기본 제공 HorizontalPagerIndicator
-        HorizontalPagerIndicator(
-            pagerState = pagerState,
-            pageCount = itemSize,
-            modifier = Modifier
-                .padding(16.dp)
-                .clickable {
-                    // 현재 페이지 클릭 시 다음 페이지로 이동
-                    val currentPage = pagerState.currentPage
-                    val nextPage = (currentPage + 1) % itemSize
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(nextPage)
-                    }
-                },
-            activeColor = Color.DarkGray,  // 활성화된 페이지 색상
-            inactiveColor = Color.LightGray // 비활성화된 페이지 색상
-        )
-    }
 }
 
 @Composable

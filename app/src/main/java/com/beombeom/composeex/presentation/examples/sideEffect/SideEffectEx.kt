@@ -4,7 +4,9 @@ import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -29,43 +31,22 @@ import com.beombeom.composeex.presentation.examples.bottomSheet.InfoText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 @Composable
 fun SideEffectEx() {
-    // rememberSaveable: 구성 변경이나 프로세스 중단 후에도 상태를 유지
     var showGreeting by rememberSaveable { mutableStateOf(true) }
     var uniqueId by rememberSaveable { mutableStateOf(generateRandomString()) }
     val count = rememberSaveable { mutableStateOf(0) }
 
-    // produceState: 비동기 작업으로 상태를 생성하며 컴포지션 생명주기에 따라 관리
+    // produceState: 비동기 데이터를 생성
     val asyncData by produceState(initialValue = "No ID yet...", uniqueId) {
-        delay(2000)
-        value = "ID shown in asyncData: $uniqueId"
+        delay(2000) //초기값을 보여주기위한 의도적인 딜레이
+        value = "ID (asyncData): $uniqueId"
     }
-
 
     val coroutineScope = rememberCoroutineScope { Dispatchers.IO }
-
-    Button(onClick = {
-        coroutineScope.launch {
-            Log.d("CustomMainImmediateDispatcher", "Running on Main Immediate Dispatcher")
-        }
-    }) {
-        Text("Launch Immediate Main Coroutine")
-    }
-
-
-    // rememberUpdatedState의 인자 값이 변경되어도 리컴포지션이 발생하지 않는다.
-    val greetingState = rememberUpdatedState(if (showGreeting) "Hide My Id" else "Show My Id!")
-
-    // derivedStateOf: 기존 상태를 변환하여 새로운 상태로 제공, 의존성 있는 상태가 변경될 때만 다시 계산
-    val derivedCount = remember {
-        derivedStateOf { "Derived Count: ${count.value * 2}" }
-    }
-
-    // snapshotFlow: Compose 상태를 Flow로 변환하여 비동기적으로 관찰 가능
-    val snapshotFlow = snapshotFlow { count.value }
+    val greetingState = rememberUpdatedState(if (showGreeting) "Hide My ID" else "Show My ID")
+    val derivedCount = remember { derivedStateOf { "Derived Count: ${count.value * 2}" } }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -75,37 +56,38 @@ fun SideEffectEx() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            // Count 상태를 관리하는 버튼
+            // Count 관리
             Button(onClick = {
                 count.value += 1
                 Log.d("SideEffectEx", "Count button clicked, count = ${count.value}")
             }) {
                 Text("Count is ${count.value}")
             }
+            InfoText(text = derivedCount.value)
 
-            // derivedStateOf를 사용한 상태 표시
-            Text(text = derivedCount.value)
+            Spacer(modifier = Modifier.height(10.dp))
 
-            // snapshotFlow를 사용해 count 상태를 관찰
+            // snapshotFlow: Count 상태 관찰
             LaunchedEffect(Unit) {
-                snapshotFlow.collect { value ->
+                snapshotFlow { count.value }.collect { value ->
                     Log.d("SideEffectEx", "snapshotFlow emitted value: $value")
                 }
             }
 
-            // Greeting 상태를 토글하는 버튼
+            Box(modifier = Modifier.height(20.dp), contentAlignment = Alignment.Center) {
+            // ID 관련 SideEffect
             if (showGreeting) {
-                ComponentSample(uniqueId)
+                    IDSideEffects(uniqueId = uniqueId)
+                }
             }
 
+            // ID 변경 및 토글
             Button(onClick = {
                 showGreeting = !showGreeting
                 Log.d("SideEffectEx", "Toggle Greeting button clicked, showGreeting = $showGreeting")
             }) {
                 Text(greetingState.value)
             }
-
-            // uniqueId를 변경하는 버튼
             Button(onClick = {
                 uniqueId = generateRandomString()
                 Log.d("SideEffectEx", "Change ID button clicked, new uniqueId = $uniqueId")
@@ -113,60 +95,50 @@ fun SideEffectEx() {
                 Text("Generate New ID")
             }
 
-            // rememberCoroutineScope를 사용해 Coroutine 실행
+            // Coroutine 실행
             Button(onClick = {
                 coroutineScope.launch {
                     delay(1000)
                     Log.d("SideEffectEx", "Coroutine executed with uniqueId = $uniqueId")
-                  }
+                }
             }) {
                 Text("Launch Coroutine")
             }
 
-            // produceState로 생성된 비동기 데이터를 표시
+            // produceState 데이터 표시
             InfoText(text = asyncData)
         }
     }
 }
 
 @Composable
-fun RememberUpdatedStateExample(onEvent: (String) -> Unit) {
-    val updatedOnEvent = rememberUpdatedState(onEvent)
-
-    LaunchedEffect(Unit) {
-        while (true) {
-            delay(1000)
-            updatedOnEvent.value("Event Triggered")
-        }
-    }
-}
-
-
-
-@Composable
-fun ComponentSample(uniqueId: String) {
-    InfoText(text = "My Id: $uniqueId!")
+fun IDSideEffects(uniqueId: String) {
+    InfoText(text = "My ID: $uniqueId!")
 
     // LaunchedEffect: 키가 변경될 때마다 실행
     LaunchedEffect(uniqueId) {
-        Log.d("ComponentSample", "LaunchedEffect triggered by randomId = $uniqueId")
+        Log.d("SideEffectEx", "LaunchedEffect triggered by randomId = $uniqueId")
     }
 
     // DisposableEffect: 키가 변경되거나 컴포저블이 제거될 때 실행 및 정리
     DisposableEffect(key1 = uniqueId) {
-        Log.d("ComponentSample", "DisposableEffect started for randomId = $uniqueId")
+        Log.d("SideEffectEx", "DisposableEffect started for randomId = $uniqueId")
 
         onDispose {
-            Log.d("ComponentSample", "DisposableEffect disposed for randomId = $uniqueId")
+            Log.d("SideEffectEx", "DisposableEffect disposed for randomId = $uniqueId")
         }
     }
 
     // SideEffect: 컴포저블이 재구성될 때마다 실행
     SideEffect {
-        Log.d("ComponentSample", "SideEffect: ComponentSample recomposed with randomId = $uniqueId")
+        Log.d("SideEffectEx", "SideEffect: ComponentSample recomposed with randomId = $uniqueId")
     }
 }
 
 fun generateRandomString(): String {
-    return UUID.randomUUID().toString()
+    val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    return (1..8)
+        .map { chars.random() }
+        .joinToString("")
 }
+
