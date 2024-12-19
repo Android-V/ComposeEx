@@ -8,12 +8,14 @@ import com.beombeom.composeex.presentation.examples.bottomSheet.BottomSheetScaff
 import com.beombeom.composeex.presentation.examples.bottomSheet.ModalBottomSheetEx
 import com.beombeom.composeex.presentation.examples.pager.PagerEx
 import com.beombeom.composeex.presentation.examples.lazyLow.RecyclerViewEx
+import com.beombeom.composeex.presentation.examples.pullToRefresh.FullToRefreshEx
 import com.beombeom.composeex.presentation.examples.sideEffect.SideEffectEx
 import com.beombeom.composeex.presentation.examples.videoPlayer.VideoPlayerEx
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_BOTTOM_SHEET_MENU
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_BOTTOM_SHEET_SCAFFOLD
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_MODAL_BOTTOM_SHEET
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_PAGER
+import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_PULL_TO_REFRESH
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_RECYCLERVIEW
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_SIDE_EFFECT
 import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_VIDEO_PLAYER
@@ -21,6 +23,7 @@ import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_BOTTOM_SHEE
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_BOTTOM_SHEET_SCAFFOLD
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_MODAL_BOTTOM_SHEET
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_PAGER
+import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_PULL_TO_REFRESH
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_RECYCLERVIEW
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_SIDE_EFFECT
 import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_VIDEO_PLAYER
@@ -28,6 +31,7 @@ import com.beombeom.composeex.presentation.navigation.Routes.BOTTOM_SHEET_MENU
 import com.beombeom.composeex.presentation.navigation.Routes.BOTTOM_SHEET_SCAFFOLD
 import com.beombeom.composeex.presentation.navigation.Routes.MODAL_BOTTOM_SHEET
 import com.beombeom.composeex.presentation.navigation.Routes.PAGER
+import com.beombeom.composeex.presentation.navigation.Routes.PULL_TO_REFRESH
 import com.beombeom.composeex.presentation.navigation.Routes.RECYCLERVIEW
 import com.beombeom.composeex.presentation.navigation.Routes.SIDE_EFFECT
 import com.beombeom.composeex.presentation.navigation.Routes.VIDEO_PLAYER
@@ -95,6 +99,13 @@ data class ExItem(
             description = DESCRIPTION_SIDE_EFFECT
         )
 
+        private val PullToRefresh = ExItem(
+            route = PULL_TO_REFRESH,
+            title = TITLE_PULL_TO_REFRESH,
+            content = { _, _ -> FullToRefreshEx() },
+            description = DESCRIPTION_PULL_TO_REFRESH
+        )
+
         fun getExList(): List<ExItem> = listOf(
             BottomSheet,
             BottomSheetScaffold,
@@ -113,6 +124,7 @@ object Routes {
     const val RECYCLERVIEW = "recyclerView"
     const val VIDEO_PLAYER = "videoPlayer"
     const val SIDE_EFFECT = "sideEffect"
+    const val PULL_TO_REFRESH = "pullToRefresh"
 
     // sub routes
     const val BOTTOM_SHEET_SCAFFOLD = "bottomSheetScaffold"
@@ -127,6 +139,7 @@ object ExTitles {
     const val TITLE_RECYCLERVIEW = "RecyclerView Ex"
     const val TITLE_VIDEO_PLAYER = "VideoPlayer Ex"
     const val TITLE_SIDE_EFFECT = "SideEffect Ex"
+    const val TITLE_PULL_TO_REFRESH = "Pull To Refresh Ex"
 }
 
 object SubCategories {
@@ -141,4 +154,5 @@ object ExDescriptions {
     const val DESCRIPTION_RECYCLERVIEW = "LazyRow로 구현해보는 RecyclerView"
     const val DESCRIPTION_VIDEO_PLAYER = "ExoPlayer를 사용하여 구현해보는 VideoPlayer"
     const val DESCRIPTION_SIDE_EFFECT = "다양한 SideEffect를 사용해보는 예제"
+    const val DESCRIPTION_PULL_TO_REFRESH = "PullToRefresh를 구현해보는 예제"
 }
