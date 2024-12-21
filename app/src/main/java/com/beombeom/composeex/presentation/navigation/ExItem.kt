@@ -113,7 +113,8 @@ data class ExItem(
             Pager,
             RecyclerView,
             VideoPlayer,
-            SideEffect
+            SideEffect,
+            PullToRefresh,
         )
     }
 }
