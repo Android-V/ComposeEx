@@ -2,7 +2,6 @@ package com.beombeom.composeex.presentation.examples.pullToRefresh
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,57 +41,32 @@ internal fun FullToRefreshEx() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HomeScreenContent(
     state: ScreenState,
     onRefreshTrigger: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    PullToRefreshWrapper(
-        isRefreshing = state.isRefreshing,
-        onRefresh = onRefreshTrigger,
-        contentAlignment = Alignment.TopStart,
-        modifier = modifier
-    ) {
-        RandomNumList(state.items)
-    }
-}
-
-/**
- * This essentially copies PullToRefreshBox since we can't use it directly
- * as it doesn't expose enabled parameter, which we need to disable pull-to-refresh
- * in offline mode
- */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-internal fun PullToRefreshWrapper(
-    isRefreshing: Boolean,
-    onRefresh: () -> Unit,
-    modifier: Modifier = Modifier,
-    contentAlignment: Alignment = Alignment.TopStart,
-    enabled: Boolean = true,
-    content: @Composable BoxScope.() -> Unit,
-) {
     val refreshState = rememberPullToRefreshState()
 
     Box(
-        modifier.pullToRefresh(
+        modifier = modifier.pullToRefresh(
             state = refreshState,
-            isRefreshing = isRefreshing,
-            onRefresh = onRefresh,
-            enabled = enabled,
+            isRefreshing = state.isRefreshing,
+            onRefresh = onRefreshTrigger,
+            enabled = true,
         ),
-        contentAlignment = contentAlignment,
+        contentAlignment = Alignment.TopStart,
     ) {
-        content()
+        RandomNumList(state.items)
         Indicator(
             modifier = Modifier.align(Alignment.TopCenter),
-            isRefreshing = isRefreshing,
+            isRefreshing = state.isRefreshing,
             state = refreshState,
         )
     }
 }
-
 
 @Composable
 private fun RandomNumList(items: List<RandomNum>) {
@@ -121,7 +95,7 @@ private fun RandomNumItem(item: RandomNum) {
                 .padding(16.dp)
         ) {
             Text(
-                text = item.id.toString(),
+                text = item.id.toString() + "th item",
                 style = MaterialTheme.typography.headlineMedium,
             )
         }
