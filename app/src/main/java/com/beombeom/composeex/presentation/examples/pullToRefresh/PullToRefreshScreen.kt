@@ -95,11 +95,9 @@ private fun RandomNumItem(item: RandomNum) {
                 .padding(16.dp)
         ) {
             Text(
-                text = item.id.toString() + "th item",
+                text = "Item Number is " + item.id.toString(),
                 style = MaterialTheme.typography.headlineMedium,
             )
         }
     }
 }
-
-
