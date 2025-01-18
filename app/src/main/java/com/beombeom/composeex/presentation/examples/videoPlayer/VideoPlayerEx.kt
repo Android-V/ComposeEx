@@ -29,6 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
+import com.beombeom.composeex.presentation.MainHeader
 
 class VideoPlayerViewModel : ViewModel() {
     var currentUri: Uri? = null
@@ -37,7 +38,7 @@ class VideoPlayerViewModel : ViewModel() {
 }
 
 @Composable
-fun VideoPlayerEx() {
+fun VideoPlayerEx(title : String) {
     val viewModel = viewModel<VideoPlayerViewModel>()
     var selectedVideoUri by rememberSaveable { mutableStateOf(viewModel.currentUri) }
 
@@ -53,6 +54,8 @@ fun VideoPlayerEx() {
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        MainHeader(title = title)
+
         Button(
             onClick = { pickVideoLauncher.launch("video/*") },
             modifier = Modifier.fillMaxWidth()

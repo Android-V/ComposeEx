@@ -34,11 +34,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.beombeom.composeex.R
+import com.beombeom.composeex.presentation.MainHeader
 import com.beombeom.composeex.presentation.examples.bottomSheet.InfoText
 import kotlinx.coroutines.launch
 
 @Composable
-fun RecyclerViewEx() {
+fun RecyclerViewEx(title : String) {
     val viewModel = viewModel<RecyclerViewViewModel>()
     val items by remember { viewModel.items }
     val listState = rememberLazyListState()
@@ -50,8 +51,9 @@ fun RecyclerViewEx() {
     Box(
         modifier = Modifier
             .fillMaxSize(),
-        contentAlignment = Alignment.Center
     ) {
+        MainHeader(title = title)
+
         Column(modifier = Modifier.align(Alignment.Center)) {
             Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                 InfoText(text = "Total items: $totalItemCount")

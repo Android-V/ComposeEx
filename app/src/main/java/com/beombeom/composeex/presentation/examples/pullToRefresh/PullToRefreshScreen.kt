@@ -2,6 +2,7 @@ package com.beombeom.composeex.presentation.examples.pullToRefresh
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,26 +25,30 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.beombeom.composeex.presentation.MainHeader
 
 @Composable
-internal fun FullToRefreshEx() {
+internal fun FullToRefreshEx(title : String) {
     val viewModel: PullToRefreshViewModel = viewModel()
     val state by viewModel.screenState.collectAsState()
+    Column {
+        MainHeader(title = title)
 
-    Scaffold(
-        modifier = Modifier.fillMaxSize()
-    ) { innerPadding ->
-        HomeScreenContent(
-            state = state,
-            onRefreshTrigger = viewModel::onPullToRefreshTrigger,
-            modifier = Modifier.padding(innerPadding)
-        )
+        Scaffold(
+            modifier = Modifier.fillMaxSize()
+        ) { innerPadding ->
+            FullToRefreshExContent(
+                state = state,
+                onRefreshTrigger = viewModel::onPullToRefreshTrigger,
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun HomeScreenContent(
+private fun FullToRefreshExContent(
     state: ScreenState,
     onRefreshTrigger: () -> Unit,
     modifier: Modifier = Modifier

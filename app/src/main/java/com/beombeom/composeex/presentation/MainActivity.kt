@@ -100,7 +100,7 @@ fun MainScreen(viewModel: MainViewModel, navController: NavHostController) {
                         exampleTitle = example.title,
                         exampleDescription = example.description,
                         onButtonClick = {
-                            navController.navigate(example.route)
+                            navController.navigate("${example.route}?title=${example.title}")
                         },
                     )
                 }
@@ -108,7 +108,6 @@ fun MainScreen(viewModel: MainViewModel, navController: NavHostController) {
         }
     }
 }
-
 
 @Composable
 fun MainHeader(title: String) {
@@ -182,7 +181,7 @@ fun CardSection(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            androidx.compose.material.Text(
+            Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = exampleDescription,
                 style = getTextStyle(14),

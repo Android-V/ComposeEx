@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.beombeom.composeex.presentation.MainHeader
 import com.beombeom.composeex.presentation.examples.bottomSheet.InfoText
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
@@ -55,7 +56,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 @Composable
-fun PagerEx() {
+fun PagerEx(title : String) {
     val viewModel = viewModel<PagerViewModel>()
     val pagerState by viewModel.pagerState.collectAsState()
     val isAutoScrollEnabled by viewModel.isAutoScrollEnabled.collectAsState()
@@ -82,6 +83,8 @@ fun PagerEx() {
         }
     }
     Box(modifier = Modifier.fillMaxSize()) {
+        MainHeader(title = title)
+
         Column(
             modifier = Modifier
                 .fillMaxSize()

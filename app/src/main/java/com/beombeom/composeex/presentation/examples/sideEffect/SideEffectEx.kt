@@ -27,13 +27,14 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.beombeom.composeex.presentation.MainHeader
 import com.beombeom.composeex.presentation.examples.bottomSheet.InfoText
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun SideEffectEx() {
+fun SideEffectEx(title : String) {
     var showGreeting by rememberSaveable { mutableStateOf(true) }
     var uniqueId by rememberSaveable { mutableStateOf(generateRandomString()) }
     val count = rememberSaveable { mutableStateOf(0) }
@@ -56,6 +57,8 @@ fun SideEffectEx() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
+            MainHeader(title = title)
+
             // Count 관리
             Button(onClick = {
                 count.value += 1
