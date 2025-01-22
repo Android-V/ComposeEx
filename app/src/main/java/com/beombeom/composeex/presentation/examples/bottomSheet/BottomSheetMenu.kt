@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
-import com.beombeom.composeex.presentation.CardSection
-import com.beombeom.composeex.presentation.MainHeader
+import com.beombeom.composeex.presentation.common.CardSection
+import com.beombeom.composeex.presentation.common.MainHeader
 import com.beombeom.composeex.presentation.navigation.ExItem
 import com.beombeom.composeex.presentation.navigation.SubCategories
 
