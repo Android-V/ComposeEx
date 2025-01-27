@@ -25,7 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.beombeom.composeex.presentation.MainHeader
+import com.beombeom.composeex.presentation.common.MainHeader
 
 @Composable
 internal fun FullToRefreshEx(title : String) {

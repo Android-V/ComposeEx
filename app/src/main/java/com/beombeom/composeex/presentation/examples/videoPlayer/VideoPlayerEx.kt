@@ -29,7 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
-import com.beombeom.composeex.presentation.MainHeader
+import com.beombeom.composeex.presentation.common.MainHeader
 
 class VideoPlayerViewModel : ViewModel() {
     var currentUri: Uri? = null

@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.beombeom.composeex.R
-import com.beombeom.composeex.presentation.MainHeader
+import com.beombeom.composeex.presentation.common.MainHeader
 import com.beombeom.composeex.presentation.examples.bottomSheet.InfoText
 import kotlinx.coroutines.launch
 
