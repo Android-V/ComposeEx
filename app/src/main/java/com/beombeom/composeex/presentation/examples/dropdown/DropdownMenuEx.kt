@@ -25,7 +25,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.beombeom.composeex.presentation.MainHeader
+import com.beombeom.composeex.presentation.common.MainHeader
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
