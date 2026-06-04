@@ -20,14 +20,28 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
 import com.beombeom.composeex.R
 import com.beombeom.composeex.presentation.common.CardSection
 import com.beombeom.composeex.presentation.common.MainHeader
+import com.beombeom.composeex.presentation.examples.bottomSheet.BottomSheetMenu
+import com.beombeom.composeex.presentation.examples.bottomSheet.BottomSheetScaffoldEx
+import com.beombeom.composeex.presentation.examples.bottomSheet.ModalBottomSheetEx
+import com.beombeom.composeex.presentation.examples.dropdown.DropdownMenuEx
+import com.beombeom.composeex.presentation.examples.lazyLow.RecyclerViewEx
+import com.beombeom.composeex.presentation.examples.pager.PagerEx
+import com.beombeom.composeex.presentation.examples.pullToRefresh.FullToRefreshEx
+import com.beombeom.composeex.presentation.examples.sideEffect.SideEffectEx
+import com.beombeom.composeex.presentation.examples.videoPlayer.VideoPlayerEx
 import com.beombeom.composeex.presentation.navigation.ExItem
+import com.beombeom.composeex.presentation.navigation.ExNavRoute
+import com.beombeom.composeex.presentation.navigation.ExTitles
 import com.beombeom.composeex.presentation.util.SetSystemUI
 
 class MainActivity : ComponentActivity() {
@@ -39,26 +53,50 @@ class MainActivity : ComponentActivity() {
                 color = Color.White,
                 contentColor = Color.Black
             ) {
-                val navController = rememberNavController()
-                NavHost(navController = navController, startDestination = "main") {
-                    composable("main") {
-                        SetSystemUI()
-                        MainScreen(viewModel, navController)
-                    }
-                    // Register routes from ExItem
-                    ExItem.getExList().forEach { item ->
-                        composable(
-                            route = item.route
-                        ) {
-                            // Pass navController if subCategory exists
-                            if (item.subCategory.isNullOrEmpty()) {
-                                item.content(navController, it)
-                            } else {
-                                item.content(null, it)
-                            }
+                val backStack = rememberNavBackStack(ExNavRoute.Main)
+                NavDisplay(
+                    backStack = backStack,
+                    onBack = { backStack.removeLastOrNull() },
+                    entryDecorators = listOf(
+                        // rememberSaveable 동작 보장 (configuration change, process death 대응)
+                        rememberSaveableStateHolderNavEntryDecorator(),
+                        // ViewModel을 NavEntry 생명주기에 스코프
+                        rememberViewModelStoreNavEntryDecorator()
+                    ),
+                    entryProvider = entryProvider {
+                        entry<ExNavRoute.Main> {
+                            SetSystemUI()
+                            MainScreen(viewModel, backStack)
+                        }
+                        entry<ExNavRoute.BottomSheetMenu> {
+                            BottomSheetMenu(backStack)
+                        }
+                        entry<ExNavRoute.BottomSheetScaffold> {
+                            BottomSheetScaffoldEx(ExTitles.TITLE_BOTTOM_SHEET_SCAFFOLD)
+                        }
+                        entry<ExNavRoute.ModalBottomSheet> {
+                            ModalBottomSheetEx(ExTitles.TITLE_MODAL_BOTTOM_SHEET)
+                        }
+                        entry<ExNavRoute.Pager> {
+                            PagerEx(ExTitles.TITLE_PAGER)
+                        }
+                        entry<ExNavRoute.RecyclerView> {
+                            RecyclerViewEx(ExTitles.TITLE_RECYCLERVIEW)
+                        }
+                        entry<ExNavRoute.VideoPlayer> {
+                            VideoPlayerEx(ExTitles.TITLE_VIDEO_PLAYER)
+                        }
+                        entry<ExNavRoute.SideEffect> {
+                            SideEffectEx(ExTitles.TITLE_SIDE_EFFECT)
+                        }
+                        entry<ExNavRoute.PullToRefresh> {
+                            FullToRefreshEx(ExTitles.TITLE_PULL_TO_REFRESH)
+                        }
+                        entry<ExNavRoute.DropdownMenu> {
+                            DropdownMenuEx(ExTitles.TITLE_DROPDOWNMENU)
                         }
                     }
-                }
+                )
             }
         }
     }
@@ -66,7 +104,7 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MainScreen(viewModel: MainViewModel, navController: NavHostController) {
+fun MainScreen(viewModel: MainViewModel, backStack: NavBackStack<NavKey>) {
     val context = LocalContext.current
     val filteredItems = ExItem.getExList().filter { it.subCategory.isNullOrEmpty() }
 
@@ -83,7 +121,7 @@ fun MainScreen(viewModel: MainViewModel, navController: NavHostController) {
                         exampleTitle = example.title,
                         exampleDescription = example.description,
                         onButtonClick = {
-                            navController.navigate("${example.route}?title=${example.title}")
+                            backStack.add(example.route)
                         },
                     )
                 }
@@ -91,7 +129,6 @@ fun MainScreen(viewModel: MainViewModel, navController: NavHostController) {
         }
     }
 }
-
 
 fun getTextStyle(fontSize: Int) = TextStyle(
     fontSize = fontSize.sp,
