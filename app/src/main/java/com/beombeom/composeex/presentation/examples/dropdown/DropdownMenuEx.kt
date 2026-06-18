@@ -29,10 +29,10 @@ import com.beombeom.composeex.presentation.common.MainHeader
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DropdownMenuEx(title : String) {
+fun DropdownMenuEx(title: String) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         MainHeader(title = title)
 
@@ -59,11 +59,11 @@ fun DefaultDropdownMenu() {
             text = items[selectedIndex],
             modifier = Modifier
                 .clickable { expanded = !expanded }
-                .padding(16.dp)
+                .padding(16.dp),
         )
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
         ) {
             items.forEachIndexed { index, label ->
                 DropdownMenuItem(
@@ -71,7 +71,7 @@ fun DefaultDropdownMenu() {
                         selectedIndex = index
                         expanded = false
                     },
-                    text = { Text(text = label) }
+                    text = { Text(text = label) },
                 )
             }
         }
@@ -90,9 +90,8 @@ fun ExpandableDropdownMenuWithTextField() {
     ExposedDropdownMenuBox(
         modifier = Modifier.padding(horizontal = 16.dp),
         expanded = isDropDownMenuExpanded,
-        onExpandedChange = { isDropDownMenuExpanded = !isDropDownMenuExpanded }
+        onExpandedChange = { isDropDownMenuExpanded = !isDropDownMenuExpanded },
     ) {
-
         OutlinedTextField(
             value = selectedOption,
             onValueChange = {},
@@ -103,12 +102,12 @@ fun ExpandableDropdownMenuWithTextField() {
             label = { Text("Select an Option") },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = isDropDownMenuExpanded)
-            }
+            },
         )
 
         ExposedDropdownMenu(
             expanded = isDropDownMenuExpanded,
-            onDismissRequest = { isDropDownMenuExpanded = false }
+            onDismissRequest = { isDropDownMenuExpanded = false },
         ) {
             menuItems.forEach { menuItem ->
                 DropdownMenuItem(
@@ -116,7 +115,7 @@ fun ExpandableDropdownMenuWithTextField() {
                         selectedOption = menuItem // 선택된 항목 설정
                         isDropDownMenuExpanded = false
                     },
-                    text = { Text(text = menuItem) }
+                    text = { Text(text = menuItem) },
                 )
             }
         }

@@ -5,16 +5,36 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class ExNavRoute : NavKey {
-    @Serializable data object Main : ExNavRoute()
-    @Serializable data object BottomSheetMenu : ExNavRoute()
-    @Serializable data object BottomSheetScaffold : ExNavRoute()
-    @Serializable data object ModalBottomSheet : ExNavRoute()
-    @Serializable data object Pager : ExNavRoute()
-    @Serializable data object RecyclerView : ExNavRoute()
-    @Serializable data object VideoPlayer : ExNavRoute()
-    @Serializable data object SideEffect : ExNavRoute()
-    @Serializable data object PullToRefresh : ExNavRoute()
-    @Serializable data object DropdownMenu : ExNavRoute()
+
+    @Serializable
+    data object Main : ExNavRoute()
+
+    @Serializable
+    data object BottomSheetMenu : ExNavRoute()
+
+    @Serializable
+    data object BottomSheetScaffold : ExNavRoute()
+
+    @Serializable
+    data object ModalBottomSheet : ExNavRoute()
+
+    @Serializable
+    data object Pager : ExNavRoute()
+
+    @Serializable
+    data object RecyclerView : ExNavRoute()
+
+    @Serializable
+    data object VideoPlayer : ExNavRoute()
+
+    @Serializable
+    data object SideEffect : ExNavRoute()
+
+    @Serializable
+    data object PullToRefresh : ExNavRoute()
+
+    @Serializable
+    data object DropdownMenu : ExNavRoute()
 }
 
 data class ExItem(
@@ -27,70 +47,71 @@ data class ExItem(
         private val BottomSheet = ExItem(
             route = ExNavRoute.BottomSheetMenu,
             title = ExTitles.TITLE_BOTTOM_SHEET_MENU,
-            description = ExDescriptions.DESCRIPTION_BOTTOM_SHEET_MENU
+            description = ExDescriptions.DESCRIPTION_BOTTOM_SHEET_MENU,
         )
 
         private val BottomSheetScaffold = ExItem(
             route = ExNavRoute.BottomSheetScaffold,
             title = ExTitles.TITLE_BOTTOM_SHEET_SCAFFOLD,
             subCategory = SubCategories.SUB_BOTTOM_SHEET,
-            description = ExDescriptions.DESCRIPTION_BOTTOM_SHEET_SCAFFOLD
+            description = ExDescriptions.DESCRIPTION_BOTTOM_SHEET_SCAFFOLD,
         )
 
         private val ModalBottomSheet = ExItem(
             route = ExNavRoute.ModalBottomSheet,
             title = ExTitles.TITLE_MODAL_BOTTOM_SHEET,
             subCategory = SubCategories.SUB_BOTTOM_SHEET,
-            description = ExDescriptions.DESCRIPTION_MODAL_BOTTOM_SHEET
+            description = ExDescriptions.DESCRIPTION_MODAL_BOTTOM_SHEET,
         )
 
         private val Pager = ExItem(
             route = ExNavRoute.Pager,
             title = ExTitles.TITLE_PAGER,
-            description = ExDescriptions.DESCRIPTION_PAGER
+            description = ExDescriptions.DESCRIPTION_PAGER,
         )
 
         private val RecyclerView = ExItem(
             route = ExNavRoute.RecyclerView,
             title = ExTitles.TITLE_RECYCLERVIEW,
-            description = ExDescriptions.DESCRIPTION_RECYCLERVIEW
+            description = ExDescriptions.DESCRIPTION_RECYCLERVIEW,
         )
 
         private val VideoPlayer = ExItem(
             route = ExNavRoute.VideoPlayer,
             title = ExTitles.TITLE_VIDEO_PLAYER,
-            description = ExDescriptions.DESCRIPTION_VIDEO_PLAYER
+            description = ExDescriptions.DESCRIPTION_VIDEO_PLAYER,
         )
 
         private val SideEffect = ExItem(
             route = ExNavRoute.SideEffect,
             title = ExTitles.TITLE_SIDE_EFFECT,
-            description = ExDescriptions.DESCRIPTION_SIDE_EFFECT
+            description = ExDescriptions.DESCRIPTION_SIDE_EFFECT,
         )
 
         private val PullToRefresh = ExItem(
             route = ExNavRoute.PullToRefresh,
             title = ExTitles.TITLE_PULL_TO_REFRESH,
-            description = ExDescriptions.DESCRIPTION_PULL_TO_REFRESH
+            description = ExDescriptions.DESCRIPTION_PULL_TO_REFRESH,
         )
 
         private val DropdownMenu = ExItem(
             route = ExNavRoute.DropdownMenu,
             title = ExTitles.TITLE_DROPDOWNMENU,
-            description = ExDescriptions.DESCRIPTION_DROPDOWNMENU
+            description = ExDescriptions.DESCRIPTION_DROPDOWNMENU,
         )
 
-        fun getExList(): List<ExItem> = listOf(
-            BottomSheet,
-            BottomSheetScaffold,
-            ModalBottomSheet,
-            Pager,
-            RecyclerView,
-            VideoPlayer,
-            SideEffect,
-            PullToRefresh,
-            DropdownMenu
-        )
+        fun getExList(): List<ExItem> =
+            listOf(
+                BottomSheet,
+                BottomSheetScaffold,
+                ModalBottomSheet,
+                Pager,
+                RecyclerView,
+                VideoPlayer,
+                SideEffect,
+                PullToRefresh,
+                DropdownMenu,
+            )
     }
 }
 

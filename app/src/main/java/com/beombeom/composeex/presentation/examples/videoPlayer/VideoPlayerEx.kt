@@ -38,12 +38,12 @@ class VideoPlayerViewModel : ViewModel() {
 }
 
 @Composable
-fun VideoPlayerEx(title : String) {
+fun VideoPlayerEx(title: String) {
     val viewModel = viewModel<VideoPlayerViewModel>()
     var selectedVideoUri by rememberSaveable { mutableStateOf(viewModel.currentUri) }
 
     val pickVideoLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
+        contract = ActivityResultContracts.GetContent(),
     ) { uri: Uri? ->
         selectedVideoUri = uri
         viewModel.currentUri = uri
@@ -52,13 +52,13 @@ fun VideoPlayerEx(title : String) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .padding(16.dp),
     ) {
         MainHeader(title = title)
 
         Button(
             onClick = { pickVideoLauncher.launch("video/*") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Text("영상 가져오기")
         }
@@ -74,25 +74,30 @@ fun VideoPlayerEx(title : String) {
 }
 
 @Composable
-fun VideoPlayerComponent(videoUri: Uri, viewModel: VideoPlayerViewModel) {
+fun VideoPlayerComponent(
+    videoUri: Uri,
+    viewModel: VideoPlayerViewModel,
+) {
     val context = LocalContext.current
     val configuration = LocalConfiguration.current
 
-    val videoHeight = if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        250.dp
-    } else {
-        200.dp
-    }
-
-    val exoPlayer = remember {
-        ExoPlayer.Builder(context).build().apply {
-            val mediaItem = MediaItem.fromUri(videoUri)
-            setMediaItem(mediaItem)
-            prepare()
-            seekTo(viewModel.currentPosition)
-            playWhenReady = viewModel.playWhenReady
+    val videoHeight =
+        if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            250.dp
+        } else {
+            200.dp
         }
-    }
+
+    val exoPlayer =
+        remember {
+            ExoPlayer.Builder(context).build().apply {
+                val mediaItem = MediaItem.fromUri(videoUri)
+                setMediaItem(mediaItem)
+                prepare()
+                seekTo(viewModel.currentPosition)
+                playWhenReady = viewModel.playWhenReady
+            }
+        }
 
     AndroidView(
         factory = {
@@ -103,7 +108,7 @@ fun VideoPlayerComponent(videoUri: Uri, viewModel: VideoPlayerViewModel) {
         modifier = Modifier
             .fillMaxWidth(0.95f)
             .padding(horizontal = 10.dp)
-            .height(videoHeight)
+            .height(videoHeight),
     )
 
     DisposableEffect(videoUri) {

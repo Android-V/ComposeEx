@@ -34,20 +34,21 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun SideEffectEx(title : String) {
+fun SideEffectEx(title: String) {
     var showGreeting by rememberSaveable { mutableStateOf(true) }
     var uniqueId by rememberSaveable { mutableStateOf(generateRandomString()) }
     val count = rememberSaveable { mutableStateOf(0) }
 
     // produceState: 비동기 데이터를 생성
     val asyncData by produceState(initialValue = "No ID yet...", uniqueId) {
-        delay(2000) //초기값을 보여주기위한 의도적인 딜레이
+        delay(2000) // 초기값을 보여주기위한 의도적인 딜레이
         value = "ID (asyncData): $uniqueId"
     }
 
     val coroutineScope = rememberCoroutineScope { Dispatchers.IO }
     val greetingState = rememberUpdatedState(if (showGreeting) "Hide My ID" else "Show My ID")
-    val derivedCount = remember { derivedStateOf { "Derived Count: ${count.value * 2}" } }
+    val derivedCount =
+        remember { derivedStateOf { "Derived Count: ${count.value * 2}" } }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -78,8 +79,8 @@ fun SideEffectEx(title : String) {
             }
 
             Box(modifier = Modifier.height(20.dp), contentAlignment = Alignment.Center) {
-            // ID 관련 SideEffect
-            if (showGreeting) {
+                // ID 관련 SideEffect
+                if (showGreeting) {
                     IDSideEffects(uniqueId = uniqueId)
                 }
             }
@@ -144,4 +145,3 @@ fun generateRandomString(): String {
         .map { chars.random() }
         .joinToString("")
 }
-

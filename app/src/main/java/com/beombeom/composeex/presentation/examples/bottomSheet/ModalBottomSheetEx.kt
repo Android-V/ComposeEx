@@ -28,22 +28,25 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun ModalBottomSheetEx(title : String) {
+fun ModalBottomSheetEx(title: String) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     val coroutineScope = rememberCoroutineScope()
 
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         stickyHeader {
             MainHeader(title = title)
         }
 
         item {
-            Column(modifier = Modifier.fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp, top = 16.dp)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
+            ) {
                 /*
                  * isVisible
                  * BottomSheet가 화면에 표시되고 있는지 여부를 나타냅니다.
@@ -82,7 +85,7 @@ fun ModalBottomSheetEx(title : String) {
                         "offset: ${sheetState.requireOffset()}"
                     } catch (e: IllegalStateException) {
                         "offset: (Not Available)"
-                    }
+                    },
                 )
             }
         }
@@ -93,9 +96,10 @@ fun ModalBottomSheetEx(title : String) {
 
         item {
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 /*
                  * Show Bottom Sheet 버튼
@@ -107,8 +111,8 @@ fun ModalBottomSheetEx(title : String) {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.DarkGray,
-                        contentColor = Color.White
-                    )
+                        contentColor = Color.White,
+                    ),
                 ) {
                     Text("Show Bottom Sheet")
                 }
@@ -126,8 +130,8 @@ fun ModalBottomSheetEx(title : String) {
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Gray,
-                        contentColor = Color.White
-                    )
+                        contentColor = Color.White,
+                    ),
                 ) {
                     Text("Collapsed Bottom Sheet")
                 }
@@ -149,11 +153,11 @@ fun ModalBottomSheetEx(title : String) {
                     sheetState = sheetState,
                     shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
                     containerColor = MaterialTheme.colorScheme.surface,
-                    tonalElevation = 16.dp
+                    tonalElevation = 16.dp,
                 ) {
                     Box(
                         modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.TopCenter
+                        contentAlignment = Alignment.TopCenter,
                     ) {
                         Column {
                             Spacer(modifier = Modifier.height(16.dp))
@@ -175,7 +179,7 @@ fun ModalBottomSheetEx(title : String) {
                                     "offset: ${sheetState.requireOffset()}"
                                 } catch (e: IllegalStateException) {
                                     "offset: (Not Available)"
-                                }
+                                },
                             )
                             Spacer(modifier = Modifier.height(16.dp))
 
@@ -194,7 +198,4 @@ fun ModalBottomSheetEx(title : String) {
             }
         }
     }
-
 }
-
-

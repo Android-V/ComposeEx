@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 fun BottomSheetScaffoldEx(title: String) {
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
-        snackbarHostState = remember { SnackbarHostState() }
+        snackbarHostState = remember { SnackbarHostState() },
     )
     val coroutineScope = rememberCoroutineScope()
 
@@ -51,7 +51,7 @@ fun BottomSheetScaffoldEx(title: String) {
                     .fillMaxSize()
                     .padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 InfoText("This is the BottomSheet")
                 InfoText("isVisible: ${scaffoldState.bottomSheetState.isVisible}")
@@ -62,12 +62,12 @@ fun BottomSheetScaffoldEx(title: String) {
                         "offset: ${scaffoldState.bottomSheetState.requireOffset()}"
                     } catch (e: IllegalStateException) {
                         "offset: (Not Available)"
-                    }
+                    },
                 )
 
                 Column(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Button(
                         onClick = {
@@ -76,7 +76,7 @@ fun BottomSheetScaffoldEx(title: String) {
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.DarkGray,
                             contentColor = Color.White,
-                        )
+                        ),
                     ) {
                         Text("Expand Sheet")
                     }
@@ -87,7 +87,7 @@ fun BottomSheetScaffoldEx(title: String) {
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Gray,
                             contentColor = Color.White,
-                        )
+                        ),
                     ) {
                         Text("Partial Expand Sheet")
                     }
@@ -96,14 +96,14 @@ fun BottomSheetScaffoldEx(title: String) {
                             coroutineScope.launch {
                                 scaffoldState.snackbarHostState.showSnackbar(
                                     message = "Message from BottomSheet!",
-                                    actionLabel = "Dismiss"
+                                    actionLabel = "Dismiss",
                                 )
                             }
                         },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.DarkGray,
                             contentColor = Color.White,
-                        )
+                        ),
                     ) {
                         Text("Show Snackbar")
                     }
@@ -114,7 +114,7 @@ fun BottomSheetScaffoldEx(title: String) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(innerPadding),
         ) {
             stickyHeader {
                 MainHeader(title = title)
@@ -124,20 +124,20 @@ fun BottomSheetScaffoldEx(title: String) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp),
                 ) {
                     InfoText(
-                        text = "Snackbar Visible: ${scaffoldState.snackbarHostState.currentSnackbarData != null}"
+                        text = "Snackbar Visible: ${scaffoldState.snackbarHostState.currentSnackbarData != null}",
                     )
                     InfoText(
                         text = "Snackbar Message: ${
                             scaffoldState.snackbarHostState.currentSnackbarData?.visuals?.message ?: "None"
-                        }"
+                        }",
                     )
                     InfoText(
                         text = "Snackbar Action: ${
                             scaffoldState.snackbarHostState.currentSnackbarData?.visuals?.actionLabel ?: "None"
-                        }"
+                        }",
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -151,14 +151,14 @@ fun BottomSheetScaffoldEx(title: String) {
                             "offset: ${scaffoldState.bottomSheetState.requireOffset()}"
                         } catch (e: IllegalStateException) {
                             "offset: (Not Available)"
-                        }
+                        },
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Column(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Button(
                             onClick = {
@@ -167,7 +167,7 @@ fun BottomSheetScaffoldEx(title: String) {
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.DarkGray,
                                 contentColor = Color.White,
-                            )
+                            ),
                         ) {
                             Text("Show BottomSheet")
                         }
@@ -177,14 +177,14 @@ fun BottomSheetScaffoldEx(title: String) {
                                 coroutineScope.launch {
                                     scaffoldState.snackbarHostState.showSnackbar(
                                         message = "Message from MainContent!",
-                                        actionLabel = "Dismiss"
+                                        actionLabel = "Dismiss",
                                     )
                                 }
                             },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = Color.Gray,
                                 contentColor = Color.White,
-                            )
+                            ),
                         ) {
                             Text("Show Snackbar")
                         }
@@ -200,15 +200,15 @@ fun InfoText(
     text: String,
     fontSize: TextUnit = 16.sp,
     fontWeight: FontWeight = FontWeight.W400,
-    color: Color = MaterialTheme.colorScheme.onSurface
+    color: Color = MaterialTheme.colorScheme.onSurface,
 ) {
     Text(
         text = text,
         style = TextStyle(
             fontSize = fontSize,
             fontWeight = fontWeight,
-            color = color
-        )
+            color = color,
+        ),
     )
     Spacer(modifier = Modifier.height(4.dp))
 }

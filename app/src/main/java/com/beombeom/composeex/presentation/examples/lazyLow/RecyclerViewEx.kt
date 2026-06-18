@@ -39,7 +39,7 @@ import com.beombeom.composeex.presentation.examples.bottomSheet.InfoText
 import kotlinx.coroutines.launch
 
 @Composable
-fun RecyclerViewEx(title : String) {
+fun RecyclerViewEx(title: String) {
     val viewModel = viewModel<RecyclerViewViewModel>()
     val items by remember { viewModel.items }
     val listState = rememberLazyListState()
@@ -63,7 +63,7 @@ fun RecyclerViewEx(title : String) {
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 Button(
                     onClick = {
@@ -77,7 +77,7 @@ fun RecyclerViewEx(title : String) {
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Gray,
                         contentColor = Color.White,
-                    )
+                    ),
                 ) {
                     Text("Previous Item")
                 }
@@ -92,7 +92,7 @@ fun RecyclerViewEx(title : String) {
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.DarkGray,
                         contentColor = Color.White,
-                    )
+                    ),
                 ) {
                     Text("Next Item")
                 }
@@ -100,7 +100,7 @@ fun RecyclerViewEx(title : String) {
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 Button(
                     onClick = {
@@ -111,7 +111,7 @@ fun RecyclerViewEx(title : String) {
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.DarkGray,
                         contentColor = Color.White,
-                    )
+                    ),
                 ) {
                     Text("Go to First")
                 }
@@ -125,7 +125,7 @@ fun RecyclerViewEx(title : String) {
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Gray,
                         contentColor = Color.White,
-                    )
+                    ),
                 ) {
                     Text("Go to Last")
                 }
@@ -133,14 +133,17 @@ fun RecyclerViewEx(title : String) {
 
             VerticalRecyclerView(
                 items = items,
-                listState = listState
+                listState = listState,
             )
         }
     }
 }
 
 @Composable
-fun VerticalRecyclerView(items: List<RecyclerViewEntity>, listState: LazyListState) {
+fun VerticalRecyclerView(
+    items: List<RecyclerViewEntity>,
+    listState: LazyListState,
+) {
     LazyRow(
         state = listState,
         modifier = Modifier
@@ -150,10 +153,10 @@ fun VerticalRecyclerView(items: List<RecyclerViewEntity>, listState: LazyListSta
         content = {
             itemsIndexed(items) { _, item ->
                 CustomUserProfile(
-                    id = item.id
+                    id = item.id,
                 )
             }
-        }
+        },
     )
 }
 
@@ -167,21 +170,21 @@ fun CustomUserProfile(id: Int) {
         shape = RoundedCornerShape(15.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = colorResource(id = R.color.aquamarine)
-        )
+            containerColor = colorResource(id = R.color.aquamarine),
+        ),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize(),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = "# $id",
                 style = TextStyle(
                     color = Color.Black,
                     fontSize = 22.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                    fontWeight = FontWeight.Bold,
+                ),
             )
         }
     }

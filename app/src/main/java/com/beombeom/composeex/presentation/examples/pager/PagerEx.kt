@@ -56,7 +56,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
 @Composable
-fun PagerEx(title : String) {
+fun PagerEx(title: String) {
     val viewModel = viewModel<PagerViewModel>()
     val pagerState by viewModel.pagerState.collectAsState()
     val isAutoScrollEnabled by viewModel.isAutoScrollEnabled.collectAsState()
@@ -89,7 +89,7 @@ fun PagerEx(title : String) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             InfoText(text = "isScrollInProgress : ${pagerState.isScrollInProgress}")
             InfoText(text = "pageCount : ${pagerState.pageCount}")
@@ -102,10 +102,10 @@ fun PagerEx(title : String) {
                     containerColor = Color.Gray,
                     contentColor = Color.White,
                 ),
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally),
             ) {
                 Text(
-                    text = if (isAutoScrollEnabled) "Auto Scroll Off" else "Auto Scroll On"
+                    text = if (isAutoScrollEnabled) "Auto Scroll Off" else "Auto Scroll On",
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
@@ -120,11 +120,11 @@ fun PagerEx(title : String) {
                             goPage(pagerState, prevPage)
                         }
                     },
-                    modifier = Modifier.align(Alignment.CenterStart)
+                    modifier = Modifier.align(Alignment.CenterStart),
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Previous Page"
+                        contentDescription = "Previous Page",
                     )
                 }
 
@@ -135,11 +135,11 @@ fun PagerEx(title : String) {
                             goPage(pagerState, nextPage)
                         }
                     },
-                    modifier = Modifier.align(Alignment.CenterEnd)
+                    modifier = Modifier.align(Alignment.CenterEnd),
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                        contentDescription = "Next Page"
+                        contentDescription = "Next Page",
                     )
                 }
             }
@@ -153,7 +153,7 @@ fun PagerEx(title : String) {
                             goPage(pagerState, page)
                         }
                     }
-                }
+                },
             )
         }
     }
@@ -192,13 +192,13 @@ fun CustomViewPager(pagerState: PagerState) {
             Column(
                 modifier = Modifier.fillMaxSize(),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     text = "This is the ${page}th page.",
                     style = TextStyle(
                         fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
                     ),
                 )
             }
@@ -211,13 +211,13 @@ fun CustomViewPager(pagerState: PagerState) {
 fun PageIndicator(
     itemSize: Int,
     pagerState: PagerState,
-    onDotClick: (Int) -> Unit
+    onDotClick: (Int) -> Unit,
 ) {
     Row(
         Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         repeat(itemSize) { index ->
             val color = if (pagerState.currentPage == index) Color.DarkGray else Color.LightGray
@@ -227,13 +227,16 @@ fun PageIndicator(
                     .clip(CircleShape)
                     .background(color)
                     .size(10.dp)
-                    .clickable { onDotClick(index) }
+                    .clickable { onDotClick(index) },
             )
         }
     }
 }
 
-private suspend fun goPage(pagerState: PagerState, nextPage: Int) {
+private suspend fun goPage(
+    pagerState: PagerState,
+    nextPage: Int,
+) {
     if (!pagerState.isScrollInProgress) {
         pagerState.animateScrollToPage(nextPage)
     } else {
@@ -250,14 +253,14 @@ fun PagerManualEx() {
         val coroutineScope = rememberCoroutineScope()
 
         LaunchedEffect(key1 = pagerState.isScrollInProgress) {
-            if (pagerState.currentPage == pagerState.pageCount - 1
-                && pagerState.isScrollInProgress
-                && pagerState.currentPageOffsetFraction == 0f
+            if (pagerState.currentPage == pagerState.pageCount - 1 &&
+                pagerState.isScrollInProgress &&
+                pagerState.currentPageOffsetFraction == 0f
             ) {
                 scrollLastPage = true
-            } else if (pagerState.currentPage == 0
-                && pagerState.isScrollInProgress
-                && pagerState.currentPageOffsetFraction == 0f
+            } else if (pagerState.currentPage == 0 &&
+                pagerState.isScrollInProgress &&
+                pagerState.currentPageOffsetFraction == 0f
             ) {
                 scrollFirstPage = true
             }
@@ -277,7 +280,7 @@ fun PagerManualEx() {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(10.dp),
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             InfoText(text = "isScrollInProgress : ${pagerState.isScrollInProgress}")
             InfoText(text = "pageCount : ${pagerState.pageCount}")
@@ -301,7 +304,7 @@ fun PagerManualEx() {
                             goPage(pagerState, page)
                         }
                     }
-                }
+                },
             )
         }
     }

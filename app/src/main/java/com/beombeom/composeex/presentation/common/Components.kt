@@ -1,6 +1,5 @@
 package com.beombeom.composeex.presentation.common
 
-import android.content.Context
 import android.os.Build
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,27 +31,28 @@ import com.beombeom.composeex.presentation.util.noRippleClickable
 @Composable
 fun MainHeader(title: String) {
     val context = LocalContext.current
-    val dynamicColorScheme = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-        dynamicLightColorScheme(context)
-    } else {
-        lightColorScheme()
-    }
+    val dynamicColorScheme =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            dynamicLightColorScheme(context)
+        } else {
+            lightColorScheme()
+        }
 
     MaterialTheme(
         colorScheme = dynamicColorScheme,
-        typography = Typography()
+        typography = Typography(),
     ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primary)
+                .background(MaterialTheme.colorScheme.primary),
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp)
                     .padding(horizontal = 20.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 Spacer(modifier = Modifier.weight(1f))
             }
@@ -62,7 +62,7 @@ fun MainHeader(title: String) {
                 modifier = Modifier.align(Alignment.Center),
                 color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.displayMedium,
-                fontSize = 20.sp
+                fontSize = 20.sp,
             )
         }
     }
@@ -70,7 +70,6 @@ fun MainHeader(title: String) {
 
 @Composable
 fun CardSection(
-    context: Context,
     exampleTitle: String,
     exampleDescription: String,
     onButtonClick: () -> Unit,
@@ -80,22 +79,22 @@ fun CardSection(
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 10.dp),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 3.dp
+            defaultElevation = 3.dp,
         ),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = Color.DarkGray,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-        )
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        ),
     ) {
         Column(
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier.padding(20.dp),
         ) {
             androidx.compose.material.Text(
                 modifier = Modifier.fillMaxWidth(),
                 text = exampleTitle,
                 color = Color.White,
-                style = getTextStyle(18)
+                style = getTextStyle(18),
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -113,7 +112,7 @@ fun CardSection(
                 modifier = Modifier
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Card(
                     modifier = Modifier
@@ -123,17 +122,16 @@ fun CardSection(
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White,
-                    )
+                    ),
                 ) {
                     Text(
                         modifier = Modifier
                             .padding(horizontal = 10.dp, vertical = 10.dp),
                         text = "Go Example",
                         color = Color.Black,
-                        style = getTextStyle(16)
+                        style = getTextStyle(16),
                     )
                 }
-
             }
         }
     }

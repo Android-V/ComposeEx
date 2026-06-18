@@ -51,7 +51,7 @@ class MainActivity : ComponentActivity() {
             val viewModel = viewModel<MainViewModel>()
             Surface(
                 color = Color.White,
-                contentColor = Color.Black
+                contentColor = Color.Black,
             ) {
                 val backStack = rememberNavBackStack(ExNavRoute.Main)
                 NavDisplay(
@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
                         // rememberSaveable 동작 보장 (configuration change, process death 대응)
                         rememberSaveableStateHolderNavEntryDecorator(),
                         // ViewModel을 NavEntry 생명주기에 스코프
-                        rememberViewModelStoreNavEntryDecorator()
+                        rememberViewModelStoreNavEntryDecorator(),
                     ),
                     entryProvider = entryProvider {
                         entry<ExNavRoute.Main> {
@@ -95,7 +95,7 @@ class MainActivity : ComponentActivity() {
                         entry<ExNavRoute.DropdownMenu> {
                             DropdownMenuEx(ExTitles.TITLE_DROPDOWNMENU)
                         }
-                    }
+                    },
                 )
             }
         }
@@ -104,7 +104,10 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MainScreen(viewModel: MainViewModel, backStack: NavBackStack<NavKey>) {
+fun MainScreen(
+    viewModel: MainViewModel,
+    backStack: NavBackStack<NavKey>,
+) {
     val context = LocalContext.current
     val filteredItems = ExItem.getExList().filter { it.subCategory.isNullOrEmpty() }
 
@@ -117,7 +120,6 @@ fun MainScreen(viewModel: MainViewModel, backStack: NavBackStack<NavKey>) {
             items(filteredItems) { example ->
                 Column(modifier = Modifier.fillMaxWidth()) {
                     CardSection(
-                        context = context,
                         exampleTitle = example.title,
                         exampleDescription = example.description,
                         onButtonClick = {
@@ -130,8 +132,9 @@ fun MainScreen(viewModel: MainViewModel, backStack: NavBackStack<NavKey>) {
     }
 }
 
-fun getTextStyle(fontSize: Int) = TextStyle(
-    fontSize = fontSize.sp,
-    letterSpacing = (-0.01).em,
-    lineHeight = 1.4.em
-)
+fun getTextStyle(fontSize: Int) =
+    TextStyle(
+        fontSize = fontSize.sp,
+        letterSpacing = (-0.01).em,
+        lineHeight = 1.4.em,
+    )

@@ -29,7 +29,10 @@ fun BottomSheetMenu(backStack: NavBackStack<NavKey>) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MenuContent(filteredItems: List<ExItem>, backStack: NavBackStack<NavKey>) {
+fun MenuContent(
+    filteredItems: List<ExItem>,
+    backStack: NavBackStack<NavKey>,
+) {
     LazyColumn(modifier = Modifier.fillMaxSize()) {
         stickyHeader {
             MainHeader(title = SubCategories.SUB_BOTTOM_SHEET)
@@ -38,12 +41,11 @@ fun MenuContent(filteredItems: List<ExItem>, backStack: NavBackStack<NavKey>) {
         items(filteredItems) { example ->
             Column(modifier = Modifier.fillMaxWidth()) {
                 CardSection(
-                    context = LocalContext.current,
                     exampleTitle = example.title,
                     exampleDescription = example.description,
                     onButtonClick = {
                         backStack.add(example.route)
-                    }
+                    },
                 )
             }
         }
