@@ -28,19 +28,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.beombeom.composeex.presentation.common.MainHeader
 
 @Composable
-internal fun FullToRefreshEx(title : String) {
+internal fun FullToRefreshEx(title: String) {
     val viewModel: PullToRefreshViewModel = viewModel()
     val state by viewModel.screenState.collectAsState()
     Column {
         MainHeader(title = title)
 
         Scaffold(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) { innerPadding ->
             FullToRefreshExContent(
                 state = state,
                 onRefreshTrigger = viewModel::onPullToRefreshTrigger,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
             )
         }
     }
@@ -51,7 +51,7 @@ internal fun FullToRefreshEx(title : String) {
 private fun FullToRefreshExContent(
     state: ScreenState,
     onRefreshTrigger: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val refreshState = rememberPullToRefreshState()
 
@@ -78,7 +78,7 @@ private fun RandomNumList(items: List<RandomNum>) {
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         items(items) { item ->
             RandomNumItem(item = item)
@@ -90,14 +90,14 @@ private fun RandomNumList(items: List<RandomNum>) {
 private fun RandomNumItem(item: RandomNum) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
     ) {
         Row(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             Text(
                 text = "Item Number is " + item.id.toString(),

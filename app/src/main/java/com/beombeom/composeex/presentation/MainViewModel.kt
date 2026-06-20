@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class MainViewModel(application : Application) : AndroidViewModel(application){
-
+class MainViewModel(application: Application) : AndroidViewModel(application) {
     val toast = MutableStateFlow("")
 }

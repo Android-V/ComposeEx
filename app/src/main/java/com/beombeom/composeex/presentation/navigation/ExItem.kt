@@ -1,148 +1,118 @@
 package com.beombeom.composeex.presentation.navigation
 
-import androidx.compose.runtime.Composable
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavController
-import com.beombeom.composeex.presentation.examples.bottomSheet.BottomSheetMenu
-import com.beombeom.composeex.presentation.examples.bottomSheet.BottomSheetScaffoldEx
-import com.beombeom.composeex.presentation.examples.bottomSheet.ModalBottomSheetEx
-import com.beombeom.composeex.presentation.examples.dropdown.DropdownMenuEx
-import com.beombeom.composeex.presentation.examples.lazyLow.RecyclerViewEx
-import com.beombeom.composeex.presentation.examples.pager.PagerEx
-import com.beombeom.composeex.presentation.examples.pullToRefresh.FullToRefreshEx
-import com.beombeom.composeex.presentation.examples.sideEffect.SideEffectEx
-import com.beombeom.composeex.presentation.examples.videoPlayer.VideoPlayerEx
-import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_BOTTOM_SHEET_MENU
-import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_BOTTOM_SHEET_SCAFFOLD
-import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_DROPDOWNMENU
-import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_MODAL_BOTTOM_SHEET
-import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_PAGER
-import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_PULL_TO_REFRESH
-import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_RECYCLERVIEW
-import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_SIDE_EFFECT
-import com.beombeom.composeex.presentation.navigation.ExDescriptions.DESCRIPTION_VIDEO_PLAYER
-import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_BOTTOM_SHEET_MENU
-import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_BOTTOM_SHEET_SCAFFOLD
-import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_DROPDOWNMENU
-import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_MODAL_BOTTOM_SHEET
-import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_PAGER
-import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_PULL_TO_REFRESH
-import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_RECYCLERVIEW
-import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_SIDE_EFFECT
-import com.beombeom.composeex.presentation.navigation.ExTitles.TITLE_VIDEO_PLAYER
-import com.beombeom.composeex.presentation.navigation.Routes.BOTTOM_SHEET_MENU
-import com.beombeom.composeex.presentation.navigation.Routes.BOTTOM_SHEET_SCAFFOLD
-import com.beombeom.composeex.presentation.navigation.Routes.DROPDOWNMENU
-import com.beombeom.composeex.presentation.navigation.Routes.MODAL_BOTTOM_SHEET
-import com.beombeom.composeex.presentation.navigation.Routes.PAGER
-import com.beombeom.composeex.presentation.navigation.Routes.PULL_TO_REFRESH
-import com.beombeom.composeex.presentation.navigation.Routes.RECYCLERVIEW
-import com.beombeom.composeex.presentation.navigation.Routes.SIDE_EFFECT
-import com.beombeom.composeex.presentation.navigation.Routes.VIDEO_PLAYER
+import androidx.navigation3.runtime.NavKey
+import kotlinx.serialization.Serializable
+
+@Serializable
+sealed class ExNavRoute : NavKey {
+
+    @Serializable
+    data object Main : ExNavRoute()
+
+    @Serializable
+    data object BottomSheetMenu : ExNavRoute()
+
+    @Serializable
+    data object BottomSheetScaffold : ExNavRoute()
+
+    @Serializable
+    data object ModalBottomSheet : ExNavRoute()
+
+    @Serializable
+    data object Pager : ExNavRoute()
+
+    @Serializable
+    data object RecyclerView : ExNavRoute()
+
+    @Serializable
+    data object VideoPlayer : ExNavRoute()
+
+    @Serializable
+    data object SideEffect : ExNavRoute()
+
+    @Serializable
+    data object PullToRefresh : ExNavRoute()
+
+    @Serializable
+    data object DropdownMenu : ExNavRoute()
+}
 
 data class ExItem(
-    val route: String,
+    val route: ExNavRoute,
     val title: String,
     val subCategory: String? = "",
-    val content: @Composable (NavController?, NavBackStackEntry) -> Unit,
     val description: String = "",
 ) {
     companion object {
         private val BottomSheet = ExItem(
-            route = BOTTOM_SHEET_MENU,
-            title = TITLE_BOTTOM_SHEET_MENU,
-            content = { navController, _ ->
-                if (navController != null) {
-                    BottomSheetMenu(navController)
-                }
-            },
-            description = DESCRIPTION_BOTTOM_SHEET_MENU
+            route = ExNavRoute.BottomSheetMenu,
+            title = ExTitles.TITLE_BOTTOM_SHEET_MENU,
+            description = ExDescriptions.DESCRIPTION_BOTTOM_SHEET_MENU,
         )
 
         private val BottomSheetScaffold = ExItem(
-            route = BOTTOM_SHEET_SCAFFOLD,
-            title = TITLE_BOTTOM_SHEET_SCAFFOLD,
+            route = ExNavRoute.BottomSheetScaffold,
+            title = ExTitles.TITLE_BOTTOM_SHEET_SCAFFOLD,
             subCategory = SubCategories.SUB_BOTTOM_SHEET,
-            content = { _, _ -> BottomSheetScaffoldEx(TITLE_BOTTOM_SHEET_SCAFFOLD) },
-            description = DESCRIPTION_BOTTOM_SHEET_SCAFFOLD
+            description = ExDescriptions.DESCRIPTION_BOTTOM_SHEET_SCAFFOLD,
         )
 
         private val ModalBottomSheet = ExItem(
-            route = MODAL_BOTTOM_SHEET,
-            title = TITLE_MODAL_BOTTOM_SHEET,
+            route = ExNavRoute.ModalBottomSheet,
+            title = ExTitles.TITLE_MODAL_BOTTOM_SHEET,
             subCategory = SubCategories.SUB_BOTTOM_SHEET,
-            content = { _, _ -> ModalBottomSheetEx(TITLE_MODAL_BOTTOM_SHEET) },
-            description = DESCRIPTION_MODAL_BOTTOM_SHEET
+            description = ExDescriptions.DESCRIPTION_MODAL_BOTTOM_SHEET,
         )
 
         private val Pager = ExItem(
-            route = PAGER,
-            title = TITLE_PAGER,
-            content = { _, _ -> PagerEx(TITLE_PAGER) },
-            description = DESCRIPTION_PAGER
+            route = ExNavRoute.Pager,
+            title = ExTitles.TITLE_PAGER,
+            description = ExDescriptions.DESCRIPTION_PAGER,
         )
 
         private val RecyclerView = ExItem(
-            route = RECYCLERVIEW,
-            title = TITLE_RECYCLERVIEW,
-            content = { _, _ -> RecyclerViewEx(TITLE_RECYCLERVIEW) },
-            description = DESCRIPTION_RECYCLERVIEW
+            route = ExNavRoute.RecyclerView,
+            title = ExTitles.TITLE_RECYCLERVIEW,
+            description = ExDescriptions.DESCRIPTION_RECYCLERVIEW,
         )
 
         private val VideoPlayer = ExItem(
-            route = VIDEO_PLAYER,
-            title = TITLE_VIDEO_PLAYER,
-            content = { _, _ -> VideoPlayerEx(TITLE_VIDEO_PLAYER) },
-            description = DESCRIPTION_VIDEO_PLAYER
+            route = ExNavRoute.VideoPlayer,
+            title = ExTitles.TITLE_VIDEO_PLAYER,
+            description = ExDescriptions.DESCRIPTION_VIDEO_PLAYER,
         )
 
         private val SideEffect = ExItem(
-            route = SIDE_EFFECT,
-            title = TITLE_SIDE_EFFECT,
-            content = { _, _ -> SideEffectEx(TITLE_SIDE_EFFECT) },
-            description = DESCRIPTION_SIDE_EFFECT
+            route = ExNavRoute.SideEffect,
+            title = ExTitles.TITLE_SIDE_EFFECT,
+            description = ExDescriptions.DESCRIPTION_SIDE_EFFECT,
         )
 
         private val PullToRefresh = ExItem(
-            route = PULL_TO_REFRESH,
-            title = TITLE_PULL_TO_REFRESH,
-            content = { _, _ -> FullToRefreshEx(TITLE_PULL_TO_REFRESH) },
-            description = DESCRIPTION_PULL_TO_REFRESH
+            route = ExNavRoute.PullToRefresh,
+            title = ExTitles.TITLE_PULL_TO_REFRESH,
+            description = ExDescriptions.DESCRIPTION_PULL_TO_REFRESH,
         )
 
         private val DropdownMenu = ExItem(
-            route = DROPDOWNMENU,
-            title = TITLE_DROPDOWNMENU,
-            content = { _, _ -> DropdownMenuEx(TITLE_DROPDOWNMENU) },
-            description = DESCRIPTION_DROPDOWNMENU
+            route = ExNavRoute.DropdownMenu,
+            title = ExTitles.TITLE_DROPDOWNMENU,
+            description = ExDescriptions.DESCRIPTION_DROPDOWNMENU,
         )
 
-        fun getExList(): List<ExItem> = listOf(
-            BottomSheet,
-            BottomSheetScaffold,
-            ModalBottomSheet,
-            Pager,
-            RecyclerView,
-            VideoPlayer,
-            SideEffect,
-            PullToRefresh,
-            DropdownMenu
-        )
+        fun getExList(): List<ExItem> =
+            listOf(
+                BottomSheet,
+                BottomSheetScaffold,
+                ModalBottomSheet,
+                Pager,
+                RecyclerView,
+                VideoPlayer,
+                SideEffect,
+                PullToRefresh,
+                DropdownMenu,
+            )
     }
-}
-
-object Routes {
-    const val BOTTOM_SHEET_MENU = "bottomSheetMenu"
-    const val PAGER = "pager"
-    const val RECYCLERVIEW = "recyclerView"
-    const val VIDEO_PLAYER = "videoPlayer"
-    const val SIDE_EFFECT = "sideEffect"
-    const val PULL_TO_REFRESH = "pullToRefresh"
-    const val DROPDOWNMENU = "dropdownMenu"
-
-    // sub routes
-    const val BOTTOM_SHEET_SCAFFOLD = "bottomSheetScaffold"
-    const val MODAL_BOTTOM_SHEET = "modalBottomSheet"
 }
 
 object ExTitles {
